@@ -48,9 +48,6 @@ body{
     justify-content:space-between;
 }
 
-.lock{color:#f59e0b;}
-.check{color:#21c55a;}
-
 button{
     width:100%;
     padding:12px;
@@ -78,6 +75,7 @@ button:disabled{
 }
 </style>
 </head>
+
 <body>
 
 <div class="app">
@@ -86,22 +84,17 @@ button:disabled{
 
 <div class="stats">
 <span>Downloads: <span id="downloads">0</span></span>
-<span>Status: Ready</span>
+<span>Status: Online</span>
 </div>
 
 <div class="step">
-<span>Subscribe to Channel</span>
+<span>Subscribe</span>
 <span id="s1">🔒</span>
 </div>
 
 <div class="step">
 <span>Like Video</span>
 <span id="s2">🔒</span>
-</div>
-
-<div class="step">
-<span>Download</span>
-<span id="s3">🔒</span>
 </div>
 
 <button class="sub" id="subBtn">Subscribe</button>
@@ -112,25 +105,53 @@ button:disabled{
 
 </div>
 
+<!-- FIREBASE SDK -->
+ <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <script>
 
-let downloads = localStorage.getItem("downloads") || 0;
+// 🔥 YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyB8hVRq2Dhidcb4gRs5jIxH6Rp1-1Mgt6g",
+  authDomain: "total-downloads.firebaseapp.com",
+  databaseURL: "https://total-downloads-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "total-downloads",
+  storageBucket: "total-downloads.firebasestorage.app",
+  messagingSenderId: "263111189557",
+  appId: "1:263111189557:web:a4f0884bbdd61bba53bd7c",
+  measurementId: "G-XXFDCVEYMW"
+};
 
+// INIT FIREBASE
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// GLOBAL DOWNLOAD COUNTER
+const downloadRef = db.ref("downloads");
+
+// UI
 const subBtn = document.getElementById("subBtn");
 const likeBtn = document.getElementById("likeBtn");
 const dlBtn = document.getElementById("dlBtn");
 
 const s1 = document.getElementById("s1");
 const s2 = document.getElementById("s2");
-const s3 = document.getElementById("s3");
 
 const msg = document.getElementById("msg");
 const dlCount = document.getElementById("downloads");
 
-function update(){
-    dlCount.innerText = downloads;
+// LIVE GLOBAL COUNTER
+downloadRef.on("value", (snap) => {
+    dlCount.innerText = snap.val() || 0;
+});
+
+// ADD GLOBAL DOWNLOAD
+function addDownload(){
+    downloadRef.transaction((current) => {
+        return (current || 0) + 1;
+    });
 }
-update();
 
 // TIMER
 function wait(sec, cb){
@@ -148,9 +169,18 @@ function wait(sec, cb){
     },1000);
 }
 
-// STEP 1
+// SUBSCRIBE
 subBtn.onclick = () => {
-    window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1");
+
+    const win = window.open(
+        "https://www.youtube.com/@Saikyokonbi?sub_confirmation=1",
+        "_blank"
+    );
+
+    if(!win){
+        msg.innerText = "Allow popups first!";
+        return;
+    }
 
     subBtn.disabled = true;
 
@@ -161,9 +191,13 @@ subBtn.onclick = () => {
     });
 };
 
-// STEP 2
+// LIKE
 likeBtn.onclick = () => {
-    window.open("https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv");
+
+    window.open(
+        "https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv",
+        "_blank"
+    );
 
     likeBtn.disabled = true;
 
@@ -174,23 +208,19 @@ likeBtn.onclick = () => {
     });
 };
 
-// STEP 3
+// DOWNLOAD (GLOBAL FIREBASE)
 dlBtn.onclick = () => {
 
-    s3.innerHTML = "⬇";
-
-    downloads++;
-    localStorage.setItem("downloads", downloads);
-    update();
-
     msg.innerText = "Opening download...";
+
+    addDownload(); // 🌍 GLOBAL COUNT
 
     setTimeout(()=>{
         window.open(
             "https://www.mediafire.com/file/dj204nrxf564kta/NSWOS_1.0.1-fixed.apk/file",
             "_blank"
         );
-    }, 1500);
+    }, 1000);
 };
 
 </script>
