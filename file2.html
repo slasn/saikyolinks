@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>File 2 Download</title>
+
+<style>
+body{
+    background:#0d1117;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+    padding-top:60px;
+}
+
+button{
+    padding:12px;
+    width:200px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.subscribe{background:red;color:white;}
+.like{background:blue;color:white;}
+.download{background:green;color:white;}
+
+button:disabled{
+    background:#555;
+    cursor:not-allowed;
+}
+</style>
+</head>
+<body>
+
+<h2>📁 File 2 Download</h2>
+
+<button class="subscribe" onclick="subscribe()">Subscribe</button>
+<button id="likeBtn" class="like" disabled onclick="like()">Like Video</button>
+<button id="downloadBtn" class="download" disabled onclick="downloadFile()">Download</button>
+
+<script>
+function subscribe(){
+    window.open("https://youtube.com/@YourChannel","_blank");
+
+    setTimeout(()=>{
+        document.getElementById("likeBtn").disabled = false;
+        alert("Subscribe done! Like unlocked.");
+    },5000);
+}
+
+function like(){
+    window.open("https://youtube.com/watch?v=VIDEO_ID_2","_blank");
+
+    setTimeout(()=>{
+        document.getElementById("downloadBtn").disabled = false;
+        alert("Like done! Download unlocked.");
+    },5000);
+}
+
+function downloadFile(){
+    window.location.href = "file2.zip";
+}
+</script>
+
+</body>
+</html>
