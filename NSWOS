@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naruto Senki</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+
+/* APP CONTAINER */
+.app{
+    width:360px;
+    background:#111827;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.6);
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+/* STATS */
+.stats{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    color:#9ca3af;
+    margin-bottom:15px;
+}
+
+/* STEPS */
+.step{
+    background:#1f2937;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* ICONS */
+.lock{color:#f59e0b;}
+.check{color:#22c55e;}
+
+/* BUTTONS */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.sub{background:#ef4444;color:white;}
+.like{background:#3b82f6;color:white;}
+.download{background:#22c55e;color:white;}
+
+button:disabled{
+    background:#555;
+    cursor:not-allowed;
+}
+
+/* MESSAGE */
+#msg{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+    color:#facc15;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<div class="header">naruto</div>
+
+<div class="stats">
+<span>Downloads: <span id="downloads">0</span></span>
+<span>Status: Ready</span>
+</div>
+
+<div class="step">
+<span>Subscribe to Channel</span>
+<span id="s1">🔒</span>
+</div>
+
+<div class="step">
+<span>Like Video</span>
+<span id="s2">🔒</span>
+</div>
+
+<button class="sub" id="subBtn">Subscribe</button>
+<button class="like" id="likeBtn" disabled>Like Video</button>
+<button class="download" id="dlBtn" disabled>Download</button>
+
+<div id="msg">Complete steps to unlock download</div>
+
+</div>
+
+<script>
+
+let downloads = localStorage.getItem("downloads") || 0;
+
+const subBtn = document.getElementById("subBtn");
+const likeBtn = document.getElementById("likeBtn");
+const dlBtn = document.getElementById("dlBtn");
+
+const s1 = document.getElementById("s1");
+const s2 = document.getElementById("s2");
+const s3 = document.getElementById("s3");
+
+const msg = document.getElementById("msg");
+const dlCount = document.getElementById("downloads");
+
+function update(){
+    dlCount.innerText = downloads;
+}
+update();
+
+// timer
+function wait(sec, cb){
+    let t = sec;
+    msg.innerText = "Please wait " + t + "s...";
+
+    let i = setInterval(()=>{
+        t--;
+        msg.innerText = "Please wait " + t + "s...";
+
+        if(t <= 0){
+            clearInterval(i);
+            cb();
+        }
+    },1000);
+}
+
+// STEP 1
+subBtn.onclick = () => {
+    window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1");
+
+    subBtn.disabled = true;
+
+    wait(5, ()=>{
+        s1.innerHTML = "✅";
+        likeBtn.disabled = false;
+        msg.innerText = "Subscribe completed.";
+    });
+};
+
+// STEP 2
+likeBtn.onclick = () => {
+    window.open("https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv");
+
+    likeBtn.disabled = true;
+
+    wait(5, ()=>{
+        s2.innerHTML = "✅";
+        dlBtn.disabled = false;
+        msg.innerText = "Like completed.";
+    });
+};
+
+// STEP 3
+dlBtn.onclick = () => {
+    s3.innerHTML = "⬇";
+
+    downloads++;
+    localStorage.setItem("downloads", downloads);
+    update();
+
+    msg.innerText = "Downloading...";
+
+    window.location.href = "yourfile.zip";
+};
+
+</script>
+
+</body>
+</html>
