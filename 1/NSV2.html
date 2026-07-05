@@ -48,9 +48,6 @@ body{
     justify-content:space-between;
 }
 
-.lock{color:#f59e0b;}
-.check{color:#21c55a;}
-
 button{
     width:100%;
     padding:12px;
@@ -76,6 +73,10 @@ button:disabled{
     font-size:14px;
     color:#facc15;
 }
+
+.platform{
+    margin-top:8px;
+}
 </style>
 </head>
 <body>
@@ -99,14 +100,15 @@ button:disabled{
 <span id="s2">🔒</span>
 </div>
 
-<div class="step">
-<span>Download</span>
-<span id="s3">🔒</span>
-</div>
-
+<!-- PLATFORM BUTTONS -->
 <button class="sub" id="subBtn">Subscribe</button>
-<button class="like" id="likeBtn" disabled>Like Video</button>
-<button class="download" id="dlBtn" disabled>Download</button>
+<button class="like" id="likeBtn" disabled>Like The
+Video</button>
+<button class="download platform" id="androidBtn" disabled>Download for Android</button>
+<button class="download platform" id="iosBtn" disabled>Download for iOS</button>
+<button class="download platform" id="windowsBtn" disabled>Download for Windows</button>
+<button class="download platform" id="linuxBtn" disabled>Download for Linux</button>
+
 
 <div id="msg">Complete steps to unlock download</div>
 
@@ -118,11 +120,13 @@ let downloads = localStorage.getItem("downloads") || 0;
 
 const subBtn = document.getElementById("subBtn");
 const likeBtn = document.getElementById("likeBtn");
-const dlBtn = document.getElementById("dlBtn");
+
+const androidBtn = document.getElementById("androidBtn");
+const iosBtn = document.getElementById("iosBtn");
+const windowsBtn = document.getElementById("windowsBtn");
 
 const s1 = document.getElementById("s1");
 const s2 = document.getElementById("s2");
-const s3 = document.getElementById("s3");
 
 const msg = document.getElementById("msg");
 const dlCount = document.getElementById("downloads");
@@ -148,7 +152,7 @@ function wait(sec, cb){
     },1000);
 }
 
-// STEP 1
+// STEP 1 - SUBSCRIBE
 subBtn.onclick = () => {
     window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1");
 
@@ -161,7 +165,7 @@ subBtn.onclick = () => {
     });
 };
 
-// STEP 2
+// STEP 2 - LIKE (UNLOCK PLATFORMS)
 likeBtn.onclick = () => {
     window.open("https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv");
 
@@ -169,28 +173,46 @@ likeBtn.onclick = () => {
 
     wait(5, ()=>{
         s2.innerHTML = "✅";
-        dlBtn.disabled = false;
-        msg.innerText = "Like completed.";
+
+        androidBtn.disabled = false;
+        iosBtn.disabled = false;
+        windowsBtn.disabled = false;
+
+        msg.innerText = "Choose your platform.";
     });
 };
 
-// STEP 3
-dlBtn.onclick = () => {
-
-    s3.innerHTML = "⬇";
-
+// DOWNLOAD FUNCTION
+function downloadAction(link, text){
     downloads++;
     localStorage.setItem("downloads", downloads);
     update();
 
-    msg.innerText = "Opening download...";
+    msg.innerText = "Opening " + text + "...";
 
     setTimeout(()=>{
-        window.open(
-            "https://github.com/Naruto-Senki/files/releases/tag/v2.1.6-fix",
-            "_blank"
-        );
-    }, 1500);
+        window.open(link, "_blank");
+    }, 1000);
+}
+
+// ANDROID
+androidBtn.onclick = () => {
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Android.apk", "Android download");
+};
+
+// IOS
+iosBtn.onclick = () => {
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_iOS.ipa", "iOS download");
+};
+
+// WINDOWS
+windowsBtn.onclick = () => {
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Windows_x64.zip", "Windows download");
+};
+
+// LINUX
+linuxBtn.onclick = () => {
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Linux_x64.tar.gz", "Linux download");
 };
 
 </script>
