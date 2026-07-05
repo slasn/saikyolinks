@@ -2,48 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Saikyo Links</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download Hub</title>
+
 <style>
 body{
-    background:#0d1117;
-    color:white;
+    margin:0;
     font-family:Arial;
+    background:#0f172a;
+    color:white;
     text-align:center;
-    padding-top:50px;
+    padding-top:30px;
 }
 
+h1{
+    margin-bottom:20px;
+}
+
+/* CARD */
 .card{
-    background:#161b22;
-    width:300px;
-    margin:20px auto;
-    padding:20px;
-    border-radius:10px;
+    background:#111827;
+    width:340px;
+    margin:15px auto;
+    padding:18px;
+    border-radius:14px;
+    box-shadow:0 0 12px rgba(0,0,0,0.5);
+    text-align:left;
 }
 
+/* LOGO IMAGE */
+.card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+/* TITLE */
+.card h3{
+    margin:0;
+    font-size:18px;
+}
+
+/* DESCRIPTION */
+.card p{
+    margin:8px 0 12px 0;
+    font-size:13px;
+    color:#9ca3af;
+}
+
+/* BUTTON */
 a{
     display:block;
-    margin-top:10px;
-    padding:12px;
-    background:#4CAF50;
+    text-align:center;
+    padding:10px;
+    background:#22c55e;
     color:white;
     text-decoration:none;
     border-radius:8px;
+    font-size:14px;
+}
+
+a:hover{
+    background:#16a34a;
 }
 </style>
 </head>
 <body>
 
-<h1>📦 Games Links</h1>
+<h1>📦 Download Hub</h1>
 
+<!-- FILE 1 -->
 <div class="card">
-<h3>File 1</h3>
-<p>Minecraft Map</p>
-<a href="file1.html">Download</a>
+<img src="https://via.placeholder.com/600x300.png?text=Minecraft+Map" alt="Minecraft Map">
+<h3>Naruto Senki War Of Shinobi</h3>
+<p>
+A modded naruto senki that was all about the shinobi war
+</p>
+<a href="NSWOS">Download</a>
 </div>
 
+<!-- FILE 2 -->
 <div class="card">
-<h3>File 2</h3>
-<p>Mod Pack</p>
+<img src="https://via.placeholder.com/600x300.png?text=Mod+Pack" alt="Mod Pack">
+<h3>Mod Pack</h3>
+<p>
+Lightweight performance mod pack for smoother gameplay and better FPS.
+</p>
 <a href="file2.html">Download</a>
 </div>
 
