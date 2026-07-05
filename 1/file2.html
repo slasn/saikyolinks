@@ -2,66 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>File 2 Download</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSV2</title>
 
 <style>
 body{
-    background:#0d1117;
-    color:white;
+    margin:0;
     font-family:Arial;
-    text-align:center;
-    padding-top:60px;
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
 }
 
-button{
+.app{
+    width:360px;
+    background:#111827;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.6);
+}
+
+.header{
+    text-align:center;
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    color:#9ca3af;
+    margin-bottom:15px;
+}
+
+.step{
+    background:#1f2937;
     padding:12px;
-    width:200px;
-    margin:10px;
+    margin:10px 0;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.lock{color:#f59e0b;}
+.check{color:#21c55a;}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
     border:none;
-    border-radius:8px;
+    border-radius:10px;
+    font-size:15px;
     cursor:pointer;
 }
 
-.subscribe{background:red;color:white;}
-.like{background:blue;color:white;}
-.download{background:green;color:white;}
+.sub{background:#ef4444;color:white;}
+.like{background:#3b82f6;color:white;}
+.download{background:#22c55e;color:white;}
 
 button:disabled{
     background:#555;
     cursor:not-allowed;
 }
+
+#msg{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+    color:#facc15;
+}
 </style>
 </head>
 <body>
 
-<h2>📁 File 2 Download</h2>
+<div class="app">
 
-<button class="subscribe" onclick="subscribe()">Subscribe</button>
-<button id="likeBtn" class="like" disabled onclick="like()">Like Video</button>
-<button id="downloadBtn" class="download" disabled onclick="downloadFile()">Download</button>
+<div class="header">Naruto Senki V2</div>
+
+<div class="stats">
+<span>Downloads: <span id="downloads">0</span></span>
+<span>Status: Ready</span>
+</div>
+
+<div class="step">
+<span>Subscribe to Channel</span>
+<span id="s1">🔒</span>
+</div>
+
+<div class="step">
+<span>Like Video</span>
+<span id="s2">🔒</span>
+</div>
+
+<div class="step">
+<span>Download</span>
+<span id="s3">🔒</span>
+</div>
+
+<button class="sub" id="subBtn">Subscribe</button>
+<button class="like" id="likeBtn" disabled>Like Video</button>
+<button class="download" id="dlBtn" disabled>Download</button>
+
+<div id="msg">Complete steps to unlock download</div>
+
+</div>
 
 <script>
-function subscribe(){
-    window.open("https://youtube.com/@YourChannel","_blank");
+
+let downloads = localStorage.getItem("downloads") || 0;
+
+const subBtn = document.getElementById("subBtn");
+const likeBtn = document.getElementById("likeBtn");
+const dlBtn = document.getElementById("dlBtn");
+
+const s1 = document.getElementById("s1");
+const s2 = document.getElementById("s2");
+const s3 = document.getElementById("s3");
+
+const msg = document.getElementById("msg");
+const dlCount = document.getElementById("downloads");
+
+function update(){
+    dlCount.innerText = downloads;
+}
+update();
+
+// TIMER
+function wait(sec, cb){
+    let t = sec;
+    msg.innerText = "Please wait " + t + "s...";
+
+    let i = setInterval(()=>{
+        t--;
+        msg.innerText = "Please wait " + t + "s...";
+
+        if(t <= 0){
+            clearInterval(i);
+            cb();
+        }
+    },1000);
+}
+
+// STEP 1
+subBtn.onclick = () => {
+    window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1");
+
+    subBtn.disabled = true;
+
+    wait(5, ()=>{
+        s1.innerHTML = "✅";
+        likeBtn.disabled = false;
+        msg.innerText = "Subscribe completed.";
+    });
+};
+
+// STEP 2
+likeBtn.onclick = () => {
+    window.open("https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv");
+
+    likeBtn.disabled = true;
+
+    wait(5, ()=>{
+        s2.innerHTML = "✅";
+        dlBtn.disabled = false;
+        msg.innerText = "Like completed.";
+    });
+};
+
+// STEP 3
+dlBtn.onclick = () => {
+
+    s3.innerHTML = "⬇";
+
+    downloads++;
+    localStorage.setItem("downloads", downloads);
+    update();
+
+    msg.innerText = "Opening download...";
 
     setTimeout(()=>{
-        document.getElementById("likeBtn").disabled = false;
-        alert("Subscribe done! Like unlocked.");
-    },5000);
-}
+        window.open(
+            "https://github.com/Naruto-Senki/files/releases/tag/v2.1.6-fix",
+            "_blank"
+        );
+    }, 1500);
+};
 
-function like(){
-    window.open("https://youtube.com/watch?v=VIDEO_ID_2","_blank");
-
-    setTimeout(()=>{
-        document.getElementById("downloadBtn").disabled = false;
-        alert("Like done! Download unlocked.");
-    },5000);
-}
-
-function downloadFile(){
-    window.location.href = "file2.zip";
-}
 </script>
 
 </body>
