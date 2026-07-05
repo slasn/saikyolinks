@@ -128,7 +128,15 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // GLOBAL DOWNLOAD COUNTER
-const downloadRef = db.ref("downloads");
+const ref = db.ref("downloads");
+
+ref.on("value", (snap) => {
+    let val = snap.val();
+
+    if (val === null) val = 0;
+
+    document.getElementById("downloads").innerText = val;
+});
 
 // UI
 const subBtn = document.getElementById("subBtn");
