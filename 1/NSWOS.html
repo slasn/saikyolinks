@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Naruto Senki</title>
+<title>NSWOS</title>
 
 <style>
 body{
@@ -17,7 +17,6 @@ body{
     color:white;
 }
 
-/* APP CONTAINER */
 .app{
     width:360px;
     background:#111827;
@@ -26,14 +25,12 @@ body{
     box-shadow:0 0 20px rgba(0,0,0,0.6);
 }
 
-/* HEADER */
 .header{
     text-align:center;
     font-size:18px;
     margin-bottom:10px;
 }
 
-/* STATS */
 .stats{
     display:flex;
     justify-content:space-between;
@@ -42,7 +39,6 @@ body{
     margin-bottom:15px;
 }
 
-/* STEPS */
 .step{
     background:#1f2937;
     padding:12px;
@@ -52,11 +48,9 @@ body{
     justify-content:space-between;
 }
 
-/* ICONS */
 .lock{color:#f59e0b;}
-.check{color:#22c55e;}
+.check{color:#21c55a;}
 
-/* BUTTONS */
 button{
     width:100%;
     padding:12px;
@@ -76,7 +70,6 @@ button:disabled{
     cursor:not-allowed;
 }
 
-/* MESSAGE */
 #msg{
     text-align:center;
     margin-top:10px;
@@ -89,7 +82,7 @@ button:disabled{
 
 <div class="app">
 
-<div class="header">naruto</div>
+<div class="header">Naruto Senki War Of Shinobi</div>
 
 <div class="stats">
 <span>Downloads: <span id="downloads">0</span></span>
@@ -104,6 +97,11 @@ button:disabled{
 <div class="step">
 <span>Like Video</span>
 <span id="s2">🔒</span>
+</div>
+
+<div class="step">
+<span>Download</span>
+<span id="s3">🔒</span>
 </div>
 
 <button class="sub" id="subBtn">Subscribe</button>
@@ -134,7 +132,7 @@ function update(){
 }
 update();
 
-// timer
+// TIMER
 function wait(sec, cb){
     let t = sec;
     msg.innerText = "Please wait " + t + "s...";
@@ -178,15 +176,21 @@ likeBtn.onclick = () => {
 
 // STEP 3
 dlBtn.onclick = () => {
+
     s3.innerHTML = "⬇";
 
     downloads++;
     localStorage.setItem("downloads", downloads);
     update();
 
-    msg.innerText = "Downloading...";
+    msg.innerText = "Opening download...";
 
-    window.open("https://www.mediafire.com/file/dj204nrxf564kta/NSWOS_1.0.1-fixed.apk/file");
+    setTimeout(()=>{
+        window.open(
+            "https://www.mediafire.com/file/dj204nrxf564kta/NSWOS_1.0.1-fixed.apk/file",
+            "_blank"
+        );
+    }, 1500);
 };
 
 </script>
