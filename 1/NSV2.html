@@ -106,24 +106,48 @@ button:disabled{
 Video</button>
 <button class="download platform" id="androidBtn" disabled>Download for Android</button>
 <button class="download platform" id="iosBtn" disabled>Download for iOS</button>
-<button class="download platform" id="windowsBtn" disabled>Download for Windows</button>
-<button class="download platform" id="linuxBtn" disabled>Download for Linux</button>
-
 
 <div id="msg">Complete steps to unlock download</div>
 
 </div>
 
+<!-- FIREBASE SDK -->
+ <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <script>
 
-let downloads = parseInt(localStorage.getItem("downloads")) || 1912;
+// 🔥 FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyB8hVRq2Dhidcb4gRs5jIxH6Rp1-1Mgt6g",
+  authDomain: "total-downloads.firebaseapp.com",
+  databaseURL: "https://total-downloads-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "total-downloads",
+  storageBucket: "total-downloads.firebasestorage.app",
+  messagingSenderId: "263111189557",
+  appId: "1:263111189557:web:a4f0884bbdd61bba53bd7c",
+  measurementId: "G-XXFDCVEYMW"
+};
 
+// INIT FIREBASE
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// GLOBAL DOWNLOAD COUNTER
+const ref = db.ref("downloads");
+
+ref.on("value", (snap) => {
+    let val = snap.val();
+
+    if (val === null) val = 0;
+
+    document.getElementById("downloads").innerText = val;
+});
+
+// UI
 const subBtn = document.getElementById("subBtn");
 const likeBtn = document.getElementById("likeBtn");
-
-const androidBtn = document.getElementById("androidBtn");
-const iosBtn = document.getElementById("iosBtn");
-const windowsBtn = document.getElementById("windowsBtn");
+const dlBtn = document.getElementById("dlBtn");
 
 const s1 = document.getElementById("s1");
 const s2 = document.getElementById("s2");
@@ -131,14 +155,16 @@ const s2 = document.getElementById("s2");
 const msg = document.getElementById("msg");
 const dlCount = document.getElementById("downloads");
 
-function update() {
-    if (downloads >= 1000000) {
-        dlCount.innerText = (downloads / 1000000).toFixed(1).replace(".0", "") + "M";
-    } else if (downloads >= 1000) {
-        dlCount.innerText = (downloads / 1000).toFixed(1).replace(".0", "") + "K";
-    } else {
-        dlCount.innerText = downloads;
-    }
+// LIVE GLOBAL COUNTER
+ref.on("value", (snap) => {
+    dlCount.innerText = snap.val() || 0;
+});
+
+// ADD GLOBAL DOWNLOAD
+function addDownload(){
+    ref.transaction((current) => {
+        return (current || 0) + 1;
+    });
 }
 
 // TIMER
@@ -157,67 +183,61 @@ function wait(sec, cb){
     },1000);
 }
 
-// STEP 1 - SUBSCRIBE
-subBtn.onclick = () => {
-    window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1");
+// Subscribe
+subBtn.onclick = ()=>{
+    window.open("https://www.youtube.com/@Saikyokonbi?sub_confirmation=1","_blank");
 
     subBtn.disabled = true;
 
-    wait(5, ()=>{
+    wait(5,()=>{
         s1.innerHTML = "✅";
         likeBtn.disabled = false;
         msg.innerText = "Subscribe completed.";
     });
 };
 
-// STEP 2 - LIKE (UNLOCK PLATFORMS)
-likeBtn.onclick = () => {
-    window.open("https://youtu.be/PvUI1AZpXww?si=bOwKS5Ij3h9-4Rzv");
+// Like
+likeBtn.onclick = ()=>{
+    window.open("https://www.youtube.com/watch?v=zNJca5qw2XI&t=115s","NSV2");
 
     likeBtn.disabled = true;
 
-    wait(5, ()=>{
+    wait(5,()=>{
         s2.innerHTML = "✅";
 
         androidBtn.disabled = false;
         iosBtn.disabled = false;
         windowsBtn.disabled = false;
+        linuxBtn.disabled = false;
 
         msg.innerText = "Choose your platform.";
     });
 };
 
-// DOWNLOAD FUNCTION
+// Download
 function downloadAction(link, text){
-    downloads++;
-    localStorage.setItem("downloads", downloads);
-    update();
+    addDownload();
 
     msg.innerText = "Opening " + text + "...";
 
     setTimeout(()=>{
-        window.open(link, "_blank");
-    }, 1000);
+        window.open(link,"_blank");
+    },1000);
 }
 
-// ANDROID
-androidBtn.onclick = () => {
-    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Android.apk", "Android download");
+// Android
+androidBtn.onclick=()=>{
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Android.apk","Android download");
 };
 
-// IOS
-iosBtn.onclick = () => {
-    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_iOS.ipa", "iOS download");
+// iOS
+iosBtn.onclick=()=>{
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_iOS.ipa","iOS download");
 };
 
-// WINDOWS
-windowsBtn.onclick = () => {
-    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Windows_x64.zip", "Windows download");
-};
-
-// LINUX
-linuxBtn.onclick = () => {
-    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Linux_x64.tar.gz", "Linux download");
+// Windows
+windowsBtn.onclick=()=>{
+    downloadAction("https://github.com/Naruto-Senki/files/releases/download/v2.1.6-fix/NSV2_2.1.6-fix_Windows_x64.zip","Windows download");
 };
 
 </script>
