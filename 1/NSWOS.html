@@ -150,13 +150,13 @@ const msg = document.getElementById("msg");
 const dlCount = document.getElementById("downloads");
 
 // LIVE GLOBAL COUNTER
-downloadRef.on("value", (snap) => {
+ref.on("value", (snap) => {
     dlCount.innerText = snap.val() || 0;
 });
 
 // ADD GLOBAL DOWNLOAD
 function addDownload(){
-    downloadRef.transaction((current) => {
+    ref.transaction((current) => {
         return (current || 0) + 1;
     });
 }
