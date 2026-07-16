@@ -116,7 +116,7 @@ Video</button>
 
 <script>
 
-let downloads = parseInt(localStorage.getItem("downloads")) || 1412;
+let downloads = parseInt(localStorage.getItem("downloads")) || 1912;
 
 const subBtn = document.getElementById("subBtn");
 const likeBtn = document.getElementById("likeBtn");
@@ -131,10 +131,15 @@ const s2 = document.getElementById("s2");
 const msg = document.getElementById("msg");
 const dlCount = document.getElementById("downloads");
 
-function update(){
-    dlCount.innerText = downloads;
+function update() {
+    if (downloads >= 1000000) {
+        dlCount.innerText = (downloads / 1000000).toFixed(1).replace(".0", "") + "M";
+    } else if (downloads >= 1000) {
+        dlCount.innerText = (downloads / 1000).toFixed(1).replace(".0", "") + "K";
+    } else {
+        dlCount.innerText = downloads;
+    }
 }
-update();
 
 // TIMER
 function wait(sec, cb){
